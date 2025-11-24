@@ -34,11 +34,12 @@ exports.login = async (req, res) => {
                 expiresIn: '7d'
             })
 
-            res.cookie('sweetToken', token, {
-                httpOnly: true,
-                sameSite: "none",
-                secure: true
-            });
+res.cookie("sweetToken", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+});
 
             existingUser.password = undefined
             existingUser.role = 'admin'
@@ -59,11 +60,12 @@ exports.login = async (req, res) => {
                     email: createdUser.email
                 }
                 const token = jwt.sign(payload, process.env.JWT_SECRET, { expiresIn: '30d' })
-                res.cookie('sweetToken', token, {
-                    httpOnly: true,
-                    sameSite: "none",
-                    secure: true
-                })
+                res.cookie("sweetToken", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+});
                 return res.status(200).json({
                     message: 'Registration Successfull',
                     user: createdUser,
@@ -91,4 +93,5 @@ exports.logout = async (req, res) => {
     });
 
     return res.status(200).json({ message: 'Admin Logged Out' });
+
 }
