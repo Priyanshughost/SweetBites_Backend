@@ -23,11 +23,12 @@ exports.signup = async (req, res) => {
             expiresIn: '7d'
         })
 
-        res.cookie('sweetToken', token, {
-            httpOnly: true,
-            sameSite: "none",
-            secure: true
-        });
+        res.cookie("sweetToken", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+});
 
         createdUser.role = "user"
         res.status(200).json({
@@ -71,12 +72,12 @@ exports.login = async (req, res) => {
                 expiresIn: '7d'
             })
 
-            res.cookie('sweetToken', token, {
-                httpOnly: true,
-                secure: false, // set true in production (HTTPS)
-                sameSite: "none",
-                secure: true
-            });
+            res.cookie("sweetToken", token, {
+  httpOnly: true,
+  secure: true,
+  sameSite: "none",
+  maxAge: 7 * 24 * 60 * 60 * 1000 // 7 days
+});
 
             existingUser.role = "user"
             return res.status(200).json({
@@ -115,3 +116,4 @@ exports.logout = (req, res) => {
         res.status(400).json({ message: "Token not available" })
     }
 };
+
